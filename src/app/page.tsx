@@ -2,7 +2,7 @@ import RecentTable from "@/components/dashboard/recent-table";
 import Box from "@/components/layout/box";
 import Button from "@/components/layout/button";
 import Card from "@/components/layout/card";
-import { ClipboardList, DollarSign, List, Package, PlusCircle, ShoppingCart } from "lucide-react";
+import { ClipboardList, DollarSign, List, Moon, Package, PlusCircle, Settings, ShoppingCart } from "lucide-react";
 import { DashboardGetResponse } from "./api/dashboard/route";
 
 export default async function Home() {
@@ -38,6 +38,13 @@ export default async function Home() {
           <RecentTable logs={inventory} />
         </Box>
       </main>
+      <footer className="w-full border-t border-border p-12 flex justify-between">
+        <p className="text-muted-foreground text-sm">© 2023 StockMaster Inc. Todos los derechos reservados.</p>
+        <div className="flex gap-4 text-primary">
+          <button className="hover:bg-secondary rounded-sm p-2"><Settings className="size-6" /></button>
+          <button className="hover:bg-secondary rounded-sm p-2"><Moon className="size-6" /></button>
+        </div>
+      </footer>
     </section>
   );
 }
