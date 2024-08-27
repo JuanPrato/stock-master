@@ -4,6 +4,7 @@ import Button from "@/components/layout/button";
 import Card from "@/components/layout/card";
 import { ClipboardList, DollarSign, List, Moon, Package, PlusCircle, Settings, ShoppingCart } from "lucide-react";
 import { DashboardGetResponse } from "./api/dashboard/route";
+import AddProduct from "@/components/dashboard/add-product";
 
 export default async function Home() {
 
@@ -27,7 +28,7 @@ export default async function Home() {
         <Box>
           <h2 className="text-2xl font-semibold mb-10">Acciones Rápidas</h2>
           <div className="flex flex-col gap-4">
-            <Button icon={Package}>Añadir Producto</Button>
+            <AddProduct />
             <Button icon={ShoppingCart}>Procesar Order</Button>
             <Button icon={ClipboardList}>Generar Informe</Button>
             <Button icon={List} accent>Ver Inventario Completo</Button>
