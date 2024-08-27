@@ -7,7 +7,7 @@ import { DashboardGetResponse } from "./api/dashboard/route";
 
 export default async function Home() {
 
-  const { stats } = await fetch("http://localhost:3000/api/dashboard", { method: "GET", cache: "no-cache" }).then(r => r.json()) as DashboardGetResponse;
+  const { stats, inventory } = await fetch("http://localhost:3000/api/dashboard", { method: "GET", cache: "no-cache" }).then(r => r.json()) as DashboardGetResponse;
 
   return (
     <section>
@@ -35,7 +35,7 @@ export default async function Home() {
         </Box>
         <Box className="lg:col-span-3">
           <h2 className="text-2xl font-semibold mb-10">Actualizaciones Recientes en el Inventario</h2>
-          <RecentTable />
+          <RecentTable logs={inventory} />
         </Box>
       </main>
     </section>

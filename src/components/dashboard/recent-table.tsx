@@ -1,7 +1,20 @@
+import { DashboardGetResponse } from "@/app/api/dashboard/route";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../shadcn/ui/table";
 import ActionEntry from "./action-entry";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/es";
+import dayjs from "dayjs";
 
-export default function RecentTable() {
+
+dayjs.extend(relativeTime);
+dayjs.locale("es");
+
+interface Props {
+  logs: DashboardGetResponse["inventory"]
+}
+
+export default function RecentTable({ logs }: Props) {
+
   return (
     <Table>
       <TableHeader>
@@ -13,24 +26,21 @@ export default function RecentTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell>Laptop HP Pavilion</TableCell>
-          <ActionEntry type="entry" />
-          <TableCell>50</TableCell>
-          <TableCell>Hace 30 minutos</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>Monitor Dell 27&quot</TableCell>
-          <ActionEntry type="out" />
-          <TableCell>25</TableCell>
-          <TableCell>Hace 1 hora</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>Teclado Mecánico Logitech</TableCell>
-          <ActionEntry type="update" />
-          <TableCell>10</TableCell>
-          <TableCell>Hace 2 hora</TableCell>
-        </TableRow>
+        {
+          logs.map(log => {
+
+            const timeAgo = dayjs().to(dayjs(log.date));
+
+            return (
+              <TableRow>
+                <TableCell>{log.product}</TableCell>
+                <ActionEntry type={log.type!} />
+                <TableCell>{log.quantity}</TableCell>
+                <TableCell>{timeAgo}</TableCell>
+              </TableRow>
+            )
+          })
+        }
       </TableBody>
     </Table>
   );

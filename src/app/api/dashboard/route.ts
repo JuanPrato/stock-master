@@ -1,7 +1,11 @@
-import { orders as ordersTable, products as productsTable } from "@/db/schema";
+import {
+  inventoryLog,
+  orders as ordersTable,
+  products as productsTable,
+} from "@/db/schema";
 import { db } from "@/lib/db";
 import dayjs from "dayjs";
-import { gte } from "drizzle-orm";
+import { desc, gte } from "drizzle-orm";
 
 export type DashboardGetResponse = {
   stats: {
@@ -13,6 +17,9 @@ export type DashboardGetResponse = {
     totalValue: number;
     totalValueImproved: number;
   };
+  inventory: (Omit<typeof inventoryLog.$inferSelect, "id" | "saveDate"> & {
+    date: Date;
+  })[];
 };
 
 export async function GET() {
@@ -46,5 +53,23 @@ export async function GET() {
     if (order.urgent) stats.dayUrgent++;
   });
 
-  return Response.json({ stats });
+  const inventoryMoves = await db
+    .select()
+    .from(inventoryLog)
+    .limit(3)
+    .orderBy(desc(inventoryLog.saveDate));
+
+  const inventoryRecent: DashboardGetResponse["inventory"] = inventoryMoves.map(
+    (move) => ({
+      type: move.type,
+      product: move.product,
+      quantity: move.quantity,
+      date: move.saveDate,
+    })
+  );
+
+  return Response.json({
+    stats,
+    inventory: inventoryRecent,
+  });
 }

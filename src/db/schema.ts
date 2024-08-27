@@ -9,10 +9,10 @@ export const products = sqliteTable("products", {
   stock: integer("stock").notNull().default(0),
   stockLimit: integer("stock_limit").notNull().default(5),
   creationDate: integer("creation_date", { mode: "timestamp" }).default(
-    sql`(CURRENT_TIMESTAMP)`
+    sql`(unixepoch())`
   ),
   modifyDate: integer("modify_date", { mode: "timestamp" }).default(
-    sql`(CURRENT_TIMESTAMP)`
+    sql`(unixepoch())`
   ),
 });
 
@@ -24,7 +24,7 @@ export const orderStates = sqliteTable("states", {
 export const orders = sqliteTable("orders", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   orderDate: integer("order_date", { mode: "timestamp" }).default(
-    sql`(CURRENT_TIMESTAMP)`
+    sql`(unixepoch())`
   ),
   state: integer("state").references(() => orderStates.id),
   total: real("total").notNull().default(0),
@@ -41,5 +41,5 @@ export const inventoryLog = sqliteTable("inventory_log", {
   quantity: integer("quantity").notNull(),
   saveDate: integer("save_date", { mode: "timestamp" })
     .notNull()
-    .default(sql`(CURRENT_TIMESTAMP)`),
+    .default(sql`(unixepoch())`),
 });
