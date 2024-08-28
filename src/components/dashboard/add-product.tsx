@@ -9,6 +9,7 @@ import Input from "../layout/input";
 import { saveProduct } from "./actions";
 import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
+import { Textarea } from "../shadcn/ui/textarea";
 
 interface Props {
   categories: { id: number, description: string }[]
@@ -63,6 +64,10 @@ export default function AddProduct({ categories }: Props) {
                 }
               </SelectContent>
             </Select>
+          </div>
+          <div className="flex gap-4 items-center">
+            <Label htmlFor="description" className="text-md w-1/4">Descripción</Label>
+            <Textarea id="description" />
           </div>
         </form>
         <DialogFooter>
