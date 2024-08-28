@@ -8,7 +8,7 @@ import AddProduct from "@/components/dashboard/add-product";
 
 export default async function Home() {
 
-  const { stats, inventory } = await fetch("http://localhost:3000/api/dashboard", { method: "GET", cache: "no-cache" }).then(r => r.json()) as DashboardGetResponse;
+  const { stats, inventory, categories } = await fetch("http://localhost:3000/api/dashboard", { method: "GET", cache: "no-cache" }).then(r => r.json()) as DashboardGetResponse;
 
   return (
     <section>
@@ -28,8 +28,8 @@ export default async function Home() {
         <Box>
           <h2 className="text-2xl font-semibold mb-10">Acciones Rápidas</h2>
           <div className="flex flex-col gap-4">
-            <AddProduct />
-            <Button icon={ShoppingCart}>Procesar Order</Button>
+            <AddProduct categories={categories} />
+            <Button icon={ShoppingCart}>Procesar Orden</Button>
             <Button icon={ClipboardList}>Generar Informe</Button>
             <Button icon={List} accent>Ver Inventario Completo</Button>
           </div>

@@ -1,4 +1,5 @@
 import {
+  category,
   inventoryLog,
   orders as ordersTable,
   products as productsTable,
@@ -20,6 +21,7 @@ export type DashboardGetResponse = {
   inventory: (Omit<typeof inventoryLog.$inferSelect, "id" | "saveDate"> & {
     date: Date;
   })[];
+  categories: { id: number; description: string }[];
 };
 
 export async function GET() {
@@ -68,8 +70,11 @@ export async function GET() {
     })
   );
 
+  const categories = await db.select().from(category);
+
   return Response.json({
     stats,
     inventory: inventoryRecent,
+    categories: categories,
   });
 }

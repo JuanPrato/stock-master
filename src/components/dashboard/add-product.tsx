@@ -10,18 +10,20 @@ import { saveProduct } from "./actions";
 import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
 
-export default function AddProduct() {
+interface Props {
+  categories: { id: number, description: string }[]
+}
+
+export default function AddProduct({ categories }: Props) {
 
   const [open, setOpen] = useState(true);
   const [errors, setErrors] = useState<any>();
   const [state, action] = useFormState(saveProduct, { errors: undefined, pending: true });
 
   useEffect(() => {
-    console.log("ENTRE");
     if (!state.errors) {
       setOpen(false);
     } else {
-      console.log(state.errors);
       setErrors(state.errors);
     }
   }, [state]);
@@ -51,12 +53,14 @@ export default function AddProduct() {
             <Label htmlFor="category" className="text-md w-1/4">Categoría</Label>
             <Select>
               <SelectTrigger>
-                <SelectValue placeholder="Select a verified email to display" />
+                <SelectValue placeholder="Elegí la categoría del producto" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="m@example.com">m@example.com</SelectItem>
-                <SelectItem value="m@google.com">m@google.com</SelectItem>
-                <SelectItem value="m@support.com">m@support.com</SelectItem>
+                {
+                  categories?.map(cat => (
+                    <SelectItem key={cat.id} value={cat.id.toString()}>{cat.description}</SelectItem>
+                  ))
+                }
               </SelectContent>
             </Select>
           </div>

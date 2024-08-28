@@ -43,3 +43,8 @@ export const inventoryLog = sqliteTable("inventory_log", {
     .notNull()
     .default(sql`(unixepoch())`),
 });
+
+export const category = sqliteTable("categories", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  description: text("description").notNull().unique(),
+});
