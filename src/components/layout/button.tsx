@@ -11,7 +11,7 @@ interface Props {
 
 function ButtonA({ children, icon: Icon, accent, buttonProps }: PropsWithChildren<Props>, ref: any) {
   return (
-    <button className={twMerge("flex items-center justify-center w-full p-3 rounded-md gap-2 text-sm font-regular", accent ? "bg-secondary border border-border text-primary" : "bg-black text-primary-foreground")}
+    <button className={twMerge("flex items-center justify-center p-3 rounded-md gap-2 text-sm font-regular", accent ? "bg-secondary border border-border text-primary" : "bg-black text-primary-foreground")}
       {...buttonProps}
       ref={ref}
     >

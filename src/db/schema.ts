@@ -1,6 +1,11 @@
 import { sql } from "drizzle-orm";
 import { integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+export const category = sqliteTable("categories", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  description: text("description").notNull().unique(),
+});
+
 export const products = sqliteTable("products", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull().unique(),
@@ -14,6 +19,7 @@ export const products = sqliteTable("products", {
   modifyDate: integer("modify_date", { mode: "timestamp" }).default(
     sql`(unixepoch())`
   ),
+  category: integer("category").references(() => category.id),
 });
 
 export const orderStates = sqliteTable("states", {
@@ -42,9 +48,4 @@ export const inventoryLog = sqliteTable("inventory_log", {
   saveDate: integer("save_date", { mode: "timestamp" })
     .notNull()
     .default(sql`(unixepoch())`),
-});
-
-export const category = sqliteTable("categories", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  description: text("description").notNull().unique(),
 });
