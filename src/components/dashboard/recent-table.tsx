@@ -32,7 +32,7 @@ export default function RecentTable({ logs }: Props) {
             const timeAgo = dayjs().to(dayjs(log.date));
 
             return (
-              <TableRow>
+              <TableRow key={log.product}>
                 <TableCell>{log.product}</TableCell>
                 <ActionEntry type={log.type!} />
                 <TableCell>{log.quantity}</TableCell>
