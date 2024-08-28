@@ -1,10 +1,12 @@
 import { Label } from "../shadcn/ui/label";
 import { Input as InputUI } from "../shadcn/ui/input";
 import { ComponentProps } from "react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   name: string;
   error?: string;
+  labelProps?: { className: string };
 } & ComponentProps<typeof InputUI>;
 
 export default function Input(props: Props) {
@@ -12,7 +14,12 @@ export default function Input(props: Props) {
 
   return (
     <div className="flex gap-4 items-center">
-      <Label htmlFor={props.id} className="text-md w-1/4">{props.name}</Label>
+      <Label
+        htmlFor={props.id}
+        className={twMerge("text-md w-1/4", props.labelProps?.className)}
+      >
+        {props.name}
+      </Label>
       <div className="w-full">
         <InputUI {...props} name={props.id} className={props.error && "ring ring-destructive"} />
         {

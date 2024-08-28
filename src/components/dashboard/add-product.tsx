@@ -10,6 +10,7 @@ import { saveProduct } from "./actions";
 import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
 import { Textarea } from "../shadcn/ui/textarea";
+import InputBox from "../layout/input-box";
 
 interface Props {
   categories: { id: number, description: string }[]
@@ -50,7 +51,7 @@ export default function AddProduct({ categories }: Props) {
           <Input name="Stock" id="stock" type="number" error={errors?.stock} />
           <Input name="Limite stock" id="stockLimit" type="number" error={errors?.stockLimit} />
           <Input name="Precio" id="price" type="number" error={errors?.price} />
-          <div className="flex gap-4 items-center">
+          <InputBox>
             <Label htmlFor="category" className="text-md w-1/4">Categoría</Label>
             <Select>
               <SelectTrigger>
@@ -64,11 +65,11 @@ export default function AddProduct({ categories }: Props) {
                 }
               </SelectContent>
             </Select>
-          </div>
-          <div className="flex gap-4 items-center">
+          </InputBox>
+          <InputBox>
             <Label htmlFor="description" className="text-md w-1/4">Descripción</Label>
             <Textarea id="description" />
-          </div>
+          </InputBox>
         </form>
         <DialogFooter>
           <Button buttonProps={{ type: "submit", form: "prodForm" }}>Añadir producto</Button>

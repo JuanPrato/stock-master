@@ -2,13 +2,18 @@ import RecentTable from "@/components/dashboard/recent-table";
 import Box from "@/components/layout/box";
 import Button from "@/components/layout/button";
 import Card from "@/components/layout/card";
-import { ClipboardList, DollarSign, List, Moon, Package, PlusCircle, Settings, ShoppingCart } from "lucide-react";
+import { ClipboardList, DollarSign, List, Package, ShoppingCart } from "lucide-react";
 import { DashboardGetResponse } from "./api/dashboard/route";
 import AddProduct from "@/components/dashboard/add-product";
+import AddOrder from "@/components/dashboard/add-order";
+import { db } from "@/lib/db";
+import { products as productsTable } from "@/db/schema";
 
 export default async function Home() {
 
   const { stats, inventory, categories } = await fetch("http://localhost:3000/api/dashboard", { method: "GET", cache: "no-cache" }).then(r => r.json()) as DashboardGetResponse;
+
+  const products = await db.select().from(productsTable);
 
   return (
     <main className="p-4 grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-4">
@@ -22,7 +27,7 @@ export default async function Home() {
         <h2 className="text-2xl font-semibold mb-10">Acciones Rápidas</h2>
         <div className="flex flex-col gap-4">
           <AddProduct categories={categories} />
-          <Button icon={ShoppingCart}>Procesar Orden</Button>
+          <AddOrder products={products} />
           <Button icon={ClipboardList}>Generar Informe</Button>
           <Button icon={List} accent>Ver Inventario Completo</Button>
         </div>
