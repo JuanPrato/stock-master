@@ -32,12 +32,15 @@ export const orders = sqliteTable("orders", {
   orderDate: integer("order_date", { mode: "timestamp" }).default(
     sql`(unixepoch())`
   ),
-  state: integer("state").references(() => orderStates.id),
+  state: integer("state")
+    .references(() => orderStates.id)
+    .default(1),
   total: real("total").notNull().default(0),
   products: text("products", { mode: "json" })
     .notNull()
     .$type<{ product: string; quantity: number; price: number }[]>(),
   urgent: integer("urgent", { mode: "boolean" }).default(false),
+  client: text("client").notNull(),
 });
 
 export const inventoryLog = sqliteTable("inventory_log", {
