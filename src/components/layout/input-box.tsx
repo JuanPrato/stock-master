@@ -1,8 +1,13 @@
 import { PropsWithChildren } from "react";
+import { twMerge } from "tailwind-merge";
 
-export default function InputBox({ children }: PropsWithChildren) {
+interface Props {
+  className?: string;
+}
+
+export default function InputBox({ children, className }: PropsWithChildren<Props>) {
   return (
-    <div className="flex gap-4 items-center">
+    <div className={twMerge("flex gap-4 items-center", className)}>
       {children}
     </div>
   );

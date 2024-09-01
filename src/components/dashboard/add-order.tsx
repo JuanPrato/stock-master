@@ -1,16 +1,23 @@
 "use client";
 
 import { ShoppingCart } from "lucide-react";
-import Button from "../layout/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../shadcn/ui/dialog";
-import Input from "../layout/input";
-import { saveProduct } from "./actions";
+import { Button } from "../shadcn/ui/button";
+import InputUI from "../layout/input";
+import { Input } from "../shadcn/ui/input";
+import { saveOrder } from "./actions";
 import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
 import { products as productsTable } from "@/db/schema";
 import AddSubProduct from "./add-subproduct";
+import { Separator } from "../shadcn/ui/separator";
+import Modal from "../layout/modal";
+import { Checkbox } from "../shadcn/ui/checkbox";
+import InputBox from "../layout/input-box";
+import { Label } from "../shadcn/ui/label";
 
-type BasicProduct = {
+export type BasicProduct = {
+  id: number;
+  productId: number;
   name: string;
   value: number;
   quantity: number;
@@ -20,81 +27,107 @@ interface Props {
   products: typeof productsTable.$inferSelect[]
 }
 
+const selectProductInitState = (id = 0) => ({
+  id,
+  productId: -1,
+  name: "",
+  quantity: 0,
+  value: 0
+});
+
 export default function AddOrder({ products }: Props) {
 
-  const [open, setOpen] = useState(true);
-  const [addingProduct, setAddingProduct] = useState(false);
+  const [closeModal, setCloseModal] = useState({ should: false });
   const [errors, setErrors] = useState<any>();
-  const [state, action] = useFormState(saveProduct, { errors: undefined, pending: true });
+  const [state, action] = useFormState(saveOrder, { errors: undefined, pending: true });
 
-  const [selectProducts, setSelectedProducts] = useState<BasicProduct[]>([]);
+  const [selectProducts, setSelectedProducts] = useState<BasicProduct[]>([selectProductInitState()]);
 
   useEffect(() => {
-    if (!state.errors) {
-      setOpen(false);
-    } else {
+    if (state.errors) {
       setErrors(state.errors);
+      console.log(state.errors);
+      return;
     }
+    setCloseModal({ should: true });
   }, [state]);
 
-  useEffect(() => {
-    if (!open) {
-      setErrors(undefined);
-    }
-  }, [open]);
-
-  function handleAddingProduct() {
-    setAddingProduct(!addingProduct);
+  function addNewSubProduct() {
+    setSelectedProducts(
+      prev => [...prev, selectProductInitState(prev[prev.length - 1].id + 1)])
   }
 
+  function handleSubProductClose(id: number) {
+    setSelectedProducts(prev => {
+      return prev.map(p => (p.id === id) ? undefined : p).filter(Boolean) as unknown as BasicProduct[];
+    })
+  }
+
+  function updateSubProduct(product: BasicProduct) {
+    setSelectedProducts(prev => {
+      const index = prev.findIndex((v) => v.id === product.id);
+      return prev.with(index, product);
+    })
+  }
+
+  function onOpenChange(open: boolean) {
+    if (!open) {
+      setErrors(undefined);
+      setSelectedProducts([selectProductInitState()]);
+    }
+  }
+
+
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button icon={ShoppingCart} buttonProps={{ onClick: () => setOpen(true) }}>Procesar Orden</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Añadir nuevo Producto</DialogTitle>
-          <DialogDescription>Complete los detalles del nuevo producto a continuación</DialogDescription>
-        </DialogHeader>
-        <form className="flex flex-col gap-3" action={action} id="orderForm">
-          <Input name="Cliente" id="client" type="text" error={errors?.name} />
-          <div className="flex gap-3 flex-col">
-            <h2 className="text-md my-3 inline-block font-bold">Productos</h2>
+    <Modal
+      trigger={(
+        <Button icon={ShoppingCart}>Procesar Orden</Button>
+      )}
+      footer={(<Button type="submit" form="orderForm">Procesar orden</Button>)}
+      title="Añadir nuevo Producto"
+      description="Complete los detalles del nuevo producto a continuación"
+      onOpenChange={onOpenChange}
+      shouldClose={closeModal}
+    >
+      <form className="flex flex-col gap-3" action={action} id="orderForm">
+        <InputUI name="Cliente" id="client" type="text" error={errors?.client} />
+        <div className="flex gap-3 flex-col items-start">
+          <div className="my-1">
+            <h2 className="text-md inline-block font-bold">Productos</h2>
             {
-              selectProducts.map(prod => (
-                <div className="flex gap-2">
-                  <h4>{prod.quantity} - </h4>
-                  <h3 className="text-md fond-semibold">{prod.name}</h3>
-                </div>
-              ))
-            }
-            {
-              addingProduct && (
-                <AddSubProduct
-                  products={products}
-                  onAccept={(p) => {
-                    setSelectedProducts((prev) => ([...prev, p]));
-                    setAddingProduct(false);
-                  }}
-                />
+              errors?.products && (
+                <h3 className="text-red-400 text-sm m-0">{errors.products}</h3>
               )
             }
-            <Button
-              accent
-              buttonProps={{
-                type: "button",
-                onClick: handleAddingProduct,
-              }}
-            >{addingProduct ? "Cancelar" : "Agregar producto"}
-            </Button>
           </div>
-          <h3>Total: ${selectProducts.reduce((acc, prod) => acc + (prod.value * prod.quantity), 0)}</h3>
-        </form>
-        <DialogFooter>
-          <Button buttonProps={{ type: "submit", form: "orderForm" }}>Procesar orden</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog >
+          <Separator />
+          {
+            selectProducts.map(prod => (
+              <AddSubProduct
+                key={prod.id}
+                id={prod.id}
+                products={products}
+                canClose={prod.id !== 0}
+                onUpdate={updateSubProduct}
+                onClose={handleSubProductClose}
+              />
+            ))
+          }
+          <Input name="products" type="hidden" value={JSON.stringify(selectProducts)} onChange={() => { }} />
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={addNewSubProduct}
+          >Agregar producto
+          </Button>
+        </div>
+        <InputBox>
+          <Label>Este pedido requiere urgencia?</Label>
+          <Checkbox name="urgent" id="urgent" />
+        </InputBox>
+        <h3 className="text-md font-medium">Total: ${selectProducts.reduce((acc, prod) => acc + (prod.value * (prod.quantity || 0)), 0)}</h3>
+      </form>
+    </Modal>
   );
 }
