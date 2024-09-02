@@ -68,7 +68,7 @@ export default function AddProduct({ categories }: Props) {
           </InputBox>
           <InputBox>
             <Label htmlFor="description" className="text-md w-1/4">Descripción</Label>
-            <Textarea id="description" />
+            <Textarea id="description" name="description" />
           </InputBox>
         </form>
         <DialogFooter>

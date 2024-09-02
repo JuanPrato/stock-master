@@ -1,7 +1,7 @@
 import Filters from "@/components/inventory/filters";
 import ProductsTable from "@/components/inventory/products-table";
 import { category as categoryTable, products as productsTable } from "@/db/schema";
-import { db } from "@/lib/db";
+import { db, getCategories } from "@/lib/db";
 import { like, and, eq, inArray, SQL } from "drizzle-orm";
 
 interface Props {
@@ -15,9 +15,13 @@ export default async function Inventory({ searchParams }: Props) {
 
   const { query, category } = searchParams;
 
-  const categories = await db.select().from(categoryTable);
+  const categories = await getCategories();
 
-  const conditions: SQL<any>[] = [like(productsTable.name, `%${query}%`)];
+  const conditions: SQL<any>[] = [];
+
+  if (query) {
+    conditions.push(like(productsTable.name, `%${query}%`));
+  }
 
   if (category && category !== "all") {
     const selectedCategory = categories.find(c => c.id.toString() === category);

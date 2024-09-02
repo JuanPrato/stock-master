@@ -1,13 +1,11 @@
-import { category, products as productsTable } from "@/db/schema";
 import { formatMoney } from "@/lib/utils";
-import { Ellipsis } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../shadcn/ui/table";
-import { Button } from "../shadcn/ui/button";
 import ActionsButton from "./actions-button";
+import { DBCategory, DBProduct } from "@/lib/db.type";
 
 interface Props {
-  products: (typeof productsTable.$inferSelect)[],
-  categories: (typeof category.$inferSelect)[]
+  products: DBProduct[],
+  categories: DBCategory[]
 }
 
 export default function ProductsTable({ products, categories }: Props) {
@@ -53,7 +51,7 @@ export default function ProductsTable({ products, categories }: Props) {
             <TableCell>{product.stock}</TableCell>
             <TableCell>{formatMoney(product.price * product.stock)}</TableCell>
             <TableCell>
-              <ActionsButton />
+              <ActionsButton product={product} categories={categories} />
             </TableCell>
           </TableRow>
         ))}
