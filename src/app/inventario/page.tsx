@@ -1,28 +1,37 @@
 import Filters from "@/components/inventory/filters";
 import ProductsTable from "@/components/inventory/products-table";
-import { Button } from "@/components/shadcn/ui/button";
-import { category, products as productsTable } from "@/db/schema";
+import { category as categoryTable, products as productsTable } from "@/db/schema";
 import { db } from "@/lib/db";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import { like, and, eq, inArray, SQL } from "drizzle-orm";
 
-export default async function Inventory() {
+interface Props {
+  searchParams: {
+    query?: string;
+    category?: string;
+  }
+}
 
-  const categories = await db.select().from(category);
-  const products = await db.select().from(productsTable);
+export default async function Inventory({ searchParams }: Props) {
+
+  const { query, category } = searchParams;
+
+  const categories = await db.select().from(categoryTable);
+
+  const conditions: SQL<any>[] = [like(productsTable.name, `%${query}%`)];
+
+  if (category && category !== "all") {
+    const selectedCategory = categories.find(c => c.id.toString() === category);
+    conditions.push(eq(productsTable.category, selectedCategory!.id));
+  }
+
+  const products = await db.select().from(productsTable).where(and(...conditions));
 
   return (
     <main className="flex-1 py-6 px-4 lg:px-8">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 gap-4">
         <h1 className="text-2xl font-bold">Inventario Completo</h1>
-        <Link href="/">
-          <Button>
-            <ArrowLeft className="mr-2 h-4 max-w-4" />
-            Volver al Dashboard
-          </Button>
-        </Link>
+        <Filters categories={categories} defaultValues={searchParams} />
       </div>
-      <Filters categories={categories} />
       <ProductsTable products={products} categories={categories} />
     </main>
   );

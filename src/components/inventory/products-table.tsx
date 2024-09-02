@@ -3,6 +3,7 @@ import { formatMoney } from "@/lib/utils";
 import { Ellipsis } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../shadcn/ui/table";
 import { Button } from "../shadcn/ui/button";
+import ActionsButton from "./actions-button";
 
 interface Props {
   products: (typeof productsTable.$inferSelect)[],
@@ -52,7 +53,7 @@ export default function ProductsTable({ products, categories }: Props) {
             <TableCell>{product.stock}</TableCell>
             <TableCell>{formatMoney(product.price * product.stock)}</TableCell>
             <TableCell>
-              <Button variant="ghost"><Ellipsis className="size-6" /></Button>
+              <ActionsButton />
             </TableCell>
           </TableRow>
         ))}
