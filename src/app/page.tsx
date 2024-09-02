@@ -8,6 +8,7 @@ import AddProduct from "@/components/dashboard/add-product";
 import AddOrder from "@/components/dashboard/add-order";
 import { db } from "@/lib/db";
 import { products as productsTable } from "@/db/schema";
+import Link from "next/link";
 
 export default async function Home() {
 
@@ -29,7 +30,9 @@ export default async function Home() {
           <AddProduct categories={categories} />
           <AddOrder products={products} />
           <Button icon={ClipboardList}>Generar Informe</Button>
-          <Button icon={List} accent>Ver Inventario Completo</Button>
+          <Link href="/inventario">
+            <Button icon={List} accent>Ver Inventario Completo</Button>
+          </Link>
         </div>
       </Box>
       <Box className="lg:col-span-3">

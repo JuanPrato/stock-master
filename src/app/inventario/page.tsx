@@ -5,6 +5,7 @@ import { TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/compon
 import { category, products as productsTable } from "@/db/schema";
 import { db } from "@/lib/db";
 import { ArrowLeft, Search, Table } from "lucide-react";
+import Link from "next/link";
 
 export default async function Inventory() {
 
@@ -19,10 +20,12 @@ export default async function Inventory() {
     <main className="flex-1 py-6 px-4 lg:px-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Inventario Completo</h1>
-        <Button>
-          <ArrowLeft className="mr-2 h-4 max-w-4" />
-          Volver al Dashboard
-        </Button>
+        <Link href="/">
+          <Button>
+            <ArrowLeft className="mr-2 h-4 max-w-4" />
+            Volver al Dashboard
+          </Button>
+        </Link>
       </div>
       <div className="flex gap-4 mb-6">
         <div className="relative flex-1">
