@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Moon, Package, Settings } from "lucide-react";
+import BackButton from "@/components/layout/back-button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="flex p-4">
+        <header className="flex p-4 w-full justify-between">
           <h1 className="flex items-center justify-center"><Package />
             <span className="ml-2 text-lg font-semibold">StockMaster</span>
           </h1>
+          <BackButton />
         </header>
         {children}
         <footer className="w-full border-t border-border p-12 flex justify-between">
