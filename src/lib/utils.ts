@@ -12,3 +12,12 @@ export function parseErrors(error: z.ZodError<FormData>) {
     return acc;
   }, {} as any);
 }
+
+export function formatMoney(v: number) {
+  const formatter = new Intl.NumberFormat("es-AR", {
+    currency: "ARS",
+    style: "currency",
+  });
+
+  return formatter.format(v);
+}
