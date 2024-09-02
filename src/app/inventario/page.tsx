@@ -1,16 +1,18 @@
 import Button from "@/components/layout/button";
 import { Input } from "@/components/shadcn/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/shadcn/ui/select";
-import { TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/shadcn/ui/table";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/shadcn/ui/table";
 import { category, products as productsTable } from "@/db/schema";
 import { db } from "@/lib/db";
-import { ArrowLeft, Search, Table } from "lucide-react";
+import { ArrowLeft, Search } from "lucide-react";
 import Link from "next/link";
 
 export default async function Inventory() {
 
   const categories = await db.select().from(category);
   const products = await db.select().from(productsTable);
+
+  console.log(products);
 
   function getCategory(id: number) {
     return categories.find(c => c.id === id)?.description;
@@ -50,24 +52,27 @@ export default async function Inventory() {
       <Table>
         <TableHeader>
           <TableRow>
-            {/* <TableHead className="cursor-pointer" onClick={() => requestSort('id')}>
-              ID {sortConfig?.key === 'id' && <ArrowUpDown className="ml-2 h-4 w-4 inline" />}
+            <TableHead className="cursor-pointer">
+              Seleccionar
             </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => requestSort('name')}>
-              Nombre {sortConfig?.key === 'name' && <ArrowUpDown className="ml-2 h-4 w-4 inline" />}
+            <TableHead className="cursor-pointer">
+              Nombre
             </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => requestSort('category')}>
-              Categoría {sortConfig?.key === 'category' && <ArrowUpDown className="ml-2 h-4 w-4 inline" />}
+            <TableHead className="cursor-pointer">
+              Categoría
             </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => requestSort('price')}>
-              Precio {sortConfig?.key === 'price' && <ArrowUpDown className="ml-2 h-4 w-4 inline" />}
+            <TableHead className="cursor-pointer">
+              Precio
             </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => requestSort('quantity')}>
-              Cantidad {sortConfig?.key === 'quantity' && <ArrowUpDown className="ml-2 h-4 w-4 inline" />}
+            <TableHead className="cursor-pointer">
+              Cantidad
             </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => requestSort('totalValue')}>
-              Valor Total {sortConfig?.key === 'totalValue' && <ArrowUpDown className="ml-2 h-4 w-4 inline" />}
-            </TableHead> */}
+            <TableHead className="cursor-pointer">
+              Valor Total
+            </TableHead>
+            <TableHead className="cursor-pointer">
+              Acciones
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

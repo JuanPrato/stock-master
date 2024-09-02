@@ -14,6 +14,7 @@ const schemaSaveProduct = zfd.formData({
   price: zfd.numeric(z.number().positive()),
   stock: zfd.numeric(z.number().min(0)),
   stockLimit: zfd.numeric(z.number().min(0)),
+  category: zfd.numeric(z.number().min(0)),
 });
 
 export async function saveProduct(prevState: any, formData: FormData) {

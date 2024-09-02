@@ -53,7 +53,7 @@ export default function AddProduct({ categories }: Props) {
           <Input name="Precio" id="price" type="number" error={errors?.price} />
           <InputBox>
             <Label htmlFor="category" className="text-md w-1/4">Categoría</Label>
-            <Select>
+            <Select name="category">
               <SelectTrigger>
                 <SelectValue placeholder="Elegí la categoría del producto" />
               </SelectTrigger>
