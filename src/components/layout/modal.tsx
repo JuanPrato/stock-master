@@ -4,17 +4,17 @@ import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../shadcn/ui/dialog";
 
 interface Props {
-  trigger: ReactNode;
+  trigger?: ReactNode;
   title?: string;
   description?: string;
   footer?: ReactNode;
   onOpenChange?: (value: boolean) => void;
-  shouldClose?: { should: boolean };
+  shouldClose?: { should?: boolean, state?: boolean };
 }
 
 export default function Modal({ children, trigger, title, description, footer, onOpenChange, shouldClose }: PropsWithChildren<Props>) {
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(shouldClose?.state || false);
 
   function handleOpenChange(v: boolean) {
     setOpen(v);
@@ -22,15 +22,22 @@ export default function Modal({ children, trigger, title, description, footer, o
   }
 
   useEffect(() => {
-    if (shouldClose)
+    if (shouldClose && shouldClose.should) {
       handleOpenChange(false);
+    } else if (shouldClose && shouldClose.state !== undefined) {
+      handleOpenChange(shouldClose.state);
+    }
   }, [shouldClose]);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        {trigger}
-      </DialogTrigger>
+      {
+        trigger && (
+          <DialogTrigger asChild>
+            {trigger}
+          </DialogTrigger>
+        )
+      }
       <DialogContent>
         <DialogHeader>
           {title && (
