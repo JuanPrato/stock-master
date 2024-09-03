@@ -43,6 +43,63 @@ export async function saveProduct(prevState: any, formData: FormData) {
   };
 }
 
+const schemaUpdateProduct = zfd.formData({
+  id: zfd.numeric(),
+  name: zfd.text(),
+  description: zfd.text(z.string().optional()),
+  price: zfd.numeric(z.number().positive()),
+  stock: zfd.numeric(z.number().min(0)),
+  stockLimit: zfd.numeric(z.number().min(0)),
+  category: zfd.numeric(z.number().min(0)),
+});
+
+export async function updateProduct(ps: any, formData: FormData) {
+  const {
+    data: value,
+    error,
+    success,
+  } = schemaUpdateProduct.safeParse(formData);
+
+  if (!success) {
+    return {
+      errors: parseErrors(error),
+      pending: false,
+    };
+  }
+
+  const product = await db
+    .select()
+    .from(products)
+    .where(eq(products.id, value.id))
+    .limit(1);
+
+  if (product.length === 0) {
+    console.log("producto no encontrado");
+    return {
+      pending: false,
+      errors: {
+        global: "Producto no encontrado",
+      },
+    };
+  }
+
+  const v: Partial<typeof value> = { ...value };
+
+  delete v.id;
+
+  await db.update(products).set(v).where(eq(products.id, value.id));
+
+  await db.insert(inventoryLog).values({
+    product: value.name,
+    quantity: value.stock - product[0].stock,
+    type: "update",
+  });
+
+  return {
+    pending: false,
+  };
+}
+
 const schemaProducts = z
   .array(
     z.object({
