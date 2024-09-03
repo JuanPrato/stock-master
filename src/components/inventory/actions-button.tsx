@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import EditModal from "./edit-modal";
 import { DBCategory, DBProduct } from "@/lib/db.type";
 import { useState } from "react";
+import DeleteModal from "./delete-modal";
 
 interface Props {
   product: DBProduct;
@@ -15,6 +16,7 @@ interface Props {
 export default function ActionsButton({ product, categories }: Props) {
 
   const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
   return (
     <>
@@ -26,7 +28,7 @@ export default function ActionsButton({ product, categories }: Props) {
           <DropdownMenuItem className="cursor-pointer" onClick={() => setOpenEdit(true)}>
             <Button variant="ghost" icon={PencilIcon} className="p-1 size-full" >Editar</Button>
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem className="cursor-pointer" onClick={() => setOpenDelete(true)}>
             <Button variant="ghost" icon={Trash} className="p-1 size-full">Eliminar</Button>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -36,6 +38,12 @@ export default function ActionsButton({ product, categories }: Props) {
         categories={categories}
         open={openEdit}
         onOpenChange={(v) => setOpenEdit(v)}
+      />
+      <DeleteModal
+        product={product}
+        onOpenChange={(v) => setOpenDelete(v)}
+        open={openDelete}
+        onCancel={() => setOpenDelete(false)}
       />
     </>
   );

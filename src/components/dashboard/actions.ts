@@ -100,6 +100,47 @@ export async function updateProduct(ps: any, formData: FormData) {
   };
 }
 
+const schemaDeleteProduct = zfd.formData({
+  id: zfd.numeric(),
+});
+
+export async function deleteProduct(formData: FormData) {
+  const { data, success, error } = schemaDeleteProduct.safeParse(formData);
+
+  if (!success) {
+    return {
+      errors: parseErrors(error),
+      pending: false,
+    };
+  }
+
+  const product = await db
+    .delete(products)
+    .where(eq(products.id, data.id))
+    .returning();
+
+  if (!product[0]) {
+    return {
+      pending: false,
+      errors: {
+        global: "Producto no encontrado",
+      },
+    };
+  }
+
+  await db.insert(inventoryLog).values({
+    product: product[0].name,
+    quantity: product[0].stock,
+    type: "out",
+  });
+
+  revalidatePath("/inventario");
+
+  return {
+    pending: false,
+  };
+}
+
 const schemaProducts = z
   .array(
     z.object({
