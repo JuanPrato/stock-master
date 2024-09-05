@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 
@@ -20,4 +21,10 @@ export function formatMoney(v: number) {
   });
 
   return formatter.format(v);
+}
+
+export function formatDate(date: Date) {
+  const d = dayjs(date);
+
+  return d.format("DD/MM/YYYY");
 }
