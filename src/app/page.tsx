@@ -30,7 +30,7 @@ export default async function Home() {
           <AddProduct categories={categories} />
           <AddOrder products={products} />
           <Button icon={ClipboardList}>Generar Informe</Button>
-          <Link href="/inventario" className="block w-full">
+          <Link href="/ordenes" className="block w-full">
             <Button icon={ShoppingCart} accent buttonProps={{ className: "w-full" }}>Todas las ordenes</Button>
           </Link>
         </div>
