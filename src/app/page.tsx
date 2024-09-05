@@ -31,13 +31,16 @@ export default async function Home() {
           <AddOrder products={products} />
           <Button icon={ClipboardList}>Generar Informe</Button>
           <Link href="/inventario" className="block w-full">
-            <Button icon={List} accent buttonProps={{ className: "w-full" }}>Ver Inventario Completo</Button>
+            <Button icon={ShoppingCart} accent buttonProps={{ className: "w-full" }}>Todas las ordenes</Button>
           </Link>
         </div>
       </Box>
-      <Box className="lg:col-span-3">
-        <h2 className="text-2xl font-semibold mb-10">Actualizaciones Recientes en el Inventario</h2>
+      <Box className="lg:col-span-3 gap-3 flex flex-col">
+        <h2 className="text-2xl font-semibold">Actualizaciones Recientes en el Inventario</h2>
         <RecentTable logs={inventory} />
+        <Link href="/inventario">
+          <Button icon={List} accent>Ver Inventario Completo</Button>
+        </Link>
       </Box>
     </main>
   );
