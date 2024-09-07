@@ -207,6 +207,28 @@ export async function saveOrder(
     state: value.end ? STATES.FINALIZED : STATES.ACTIVE,
   });
 
+  if (value.end) {
+    for (const prod of value.products) {
+      const productDB = productsDB.find((p) => p.id === prod.productId);
+      if (!productDB) continue;
+
+      await db
+        .update(products)
+        .set({
+          stock: productDB.stock - prod.quantity,
+        })
+        .where(eq(products.id, productDB.id));
+    }
+
+    await db.insert(inventoryLog).values(
+      value.products.map((p) => ({
+        product: p.name,
+        type: "out" as const,
+        quantity: p.quantity,
+      }))
+    );
+  }
+
   revalidatePath("/");
 
   return {

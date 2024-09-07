@@ -9,6 +9,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Button } from "../shadcn/ui/button";
 import { CircleX } from "lucide-react";
 import { BasicProduct } from "./add-order";
+import SelectSearch from "../layout/select-search";
 
 interface Props {
   products: typeof productsTable.$inferSelect[],
@@ -47,21 +48,12 @@ export default function AddSubProduct({ products, id, canClose, onUpdate, onClos
   return (
     <div className="w-full">
       <InputBox>
-        <InputBox className="w-3/4 mb-1">
-          <Select onValueChange={setProductId}>
-            <SelectTrigger>
-              <SelectValue placeholder="Elegí el producto que quieras agregar" />
-            </SelectTrigger>
-            <SelectContent>
-              {
-                products.map(prod => (
-                  <SelectItem key={prod.id} value={prod.id.toString()}>
-                    {prod.name}
-                  </SelectItem>
-                ))
-              }
-            </SelectContent>
-          </Select>
+        <InputBox className="w-3/4">
+          <SelectSearch
+            items={products.map((p) => ({ value: p.id.toString(), label: p.name }))}
+            placeHolder="Selecciona el producto"
+            onValueChange={setProductId}
+          />
         </InputBox>
         <InputBox className="w-1/4">
           <InputUI
@@ -77,7 +69,7 @@ export default function AddSubProduct({ products, id, canClose, onUpdate, onClos
           }
         </InputBox>
       </InputBox>
-      <p className="pl-4 font-normal text-sm text-muted-foreground ">Subtotal: ${price}</p>
+      <p className="pt-1 pl-4 font-normal text-sm text-muted-foreground ">Subtotal: ${price}</p>
     </div>
   );
 }
