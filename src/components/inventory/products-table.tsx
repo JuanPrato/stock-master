@@ -21,6 +21,16 @@ export default function ProductsTable({ products, categories }: Props) {
     )
   }
 
+  function getQuantity(product: DBProduct) {
+    if (product.stock >= product.stockLimit) {
+      return <span>{product.stock}</span>;
+    }
+
+    return (
+      <span className="text-destructive font-medium animate-notification inline-block">{product.stock}</span>
+    );
+  }
+
   return (
     <Table>
       <TableHeader>
@@ -45,7 +55,7 @@ export default function ProductsTable({ products, categories }: Props) {
             <TableCell>{getCategory(product.category!)}</TableCell>
             <TableCell>{formatMoney(product.price)}</TableCell>
             <TableCell>{formatMoney(product.unitCost)}</TableCell>
-            <TableCell>{product.stock}</TableCell>
+            <TableCell>{getQuantity(product)}</TableCell>
             <TableCell>{formatMoney(product.price * product.stock)}</TableCell>
             <TableCell>
               <ActionsButton product={product} categories={categories} />
