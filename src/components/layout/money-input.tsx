@@ -8,7 +8,7 @@ import { twMerge } from "tailwind-merge";
 export default function MoneyInput(props: ComponentProps<typeof Input>) {
 
   return (
-    <div className="flex gap-4 items-center">
+    <div className={twMerge("flex gap-4 items-center", props.containerProps?.className)}>
       <Label
         htmlFor={props.id}
         className={twMerge("text-md w-1/4", props.labelProps?.className)}
