@@ -280,7 +280,7 @@ export async function updateOrderState(formData: FormData) {
     .where(eq(orders.id, value.orderId));
 
   for (const prod of order.products) {
-    // TODO: save product id to update stock
+    // TODO: save products id to update stock
     const productsDB = await db
       .select()
       .from(products)

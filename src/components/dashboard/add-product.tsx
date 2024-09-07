@@ -11,6 +11,7 @@ import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
 import { Textarea } from "../shadcn/ui/textarea";
 import InputBox from "../layout/input-box";
+import MoneyInput from "@/components/layout/money-input";
 
 interface Props {
   categories: { id: number, description: string }[]
@@ -51,8 +52,8 @@ export default function AddProduct({ categories }: Props) {
           <Input name="Stock" id="stock" type="number" error={errors?.stock} />
           <Input name="Limite stock" id="stockLimit" type="number" error={errors?.stockLimit} />
           <InputBox>
-            <Input name="Precio" id="price" type="number" error={errors?.price} />
-            <Input name="Costo" id="unitCost" type="number" error={errors?.unitCost} />
+            <MoneyInput name="Precio" id="price" type="number" error={errors?.price} />
+            <MoneyInput name="Costo" id="unitCost" type="number" error={errors?.unitCost} />
           </InputBox>
           <InputBox>
             <Label htmlFor="category" className="text-md w-1/4">Categoría</Label>
