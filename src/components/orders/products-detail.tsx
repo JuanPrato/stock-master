@@ -15,7 +15,7 @@ export default function ProductsDetail({ products, open }: Props) {
 
     <TableRow className="overflow-hidden" hidden={!open}>
       <TableCell></TableCell>
-      <TableCell colSpan={6}>
+      <TableCell colSpan={2}>
         <div>
           <div className="p-4 bg-muted/50 rounded-md">
             <h4 className="font-semibold mb-2">Productos:</h4>

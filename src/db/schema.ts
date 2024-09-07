@@ -11,6 +11,7 @@ export const products = sqliteTable("products", {
   name: text("name").notNull().unique(),
   description: text("description"),
   price: real("price").notNull().default(0),
+  unitCost: real("unit_cost").notNull().default(0),
   stock: integer("stock").notNull().default(0),
   stockLimit: integer("stock_limit").notNull().default(5),
   creationDate: integer("creation_date", { mode: "timestamp" }).default(

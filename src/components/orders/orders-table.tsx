@@ -16,8 +16,8 @@ export default function OrdersTable({ orders, states }: Props) {
       <TableHeader>
         <TableRow>
           <TableHead className="w-[50px]"></TableHead>
-          <TableHead>Cliente</TableHead>
-          <TableHead>Fecha</TableHead>
+          <TableHead className="w-[300px]">Cliente</TableHead>
+          <TableHead className="w-[150px]">Fecha</TableHead>
           <TableHead>Estado</TableHead>
           <TableHead>Urgente</TableHead>
           <TableHead className="w-[50px]">Cant. Art.</TableHead>
