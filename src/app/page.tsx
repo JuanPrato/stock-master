@@ -1,6 +1,5 @@
 import RecentTable from "@/components/dashboard/recent-table";
 import Box from "@/components/layout/box";
-import Button from "@/components/layout/button";
 import Card from "@/components/layout/card";
 import { ClipboardList, DollarSign, List, Package, ShoppingCart } from "lucide-react";
 import { DashboardGetResponse } from "./api/dashboard/route";
@@ -9,6 +8,7 @@ import AddOrder from "@/components/dashboard/add-order";
 import { db } from "@/lib/db";
 import { products as productsTable } from "@/db/schema";
 import Link from "next/link";
+import {Button} from "@/components/shadcn/ui/button";
 
 export default async function Home() {
 
@@ -31,7 +31,7 @@ export default async function Home() {
           <AddOrder products={products} />
           <Button icon={ClipboardList}>Generar Informe</Button>
           <Link href="/ordenes" className="block w-full">
-            <Button icon={ShoppingCart} accent buttonProps={{ className: "w-full" }}>Todas las ordenes</Button>
+            <Button icon={ShoppingCart} variant="outline" className="w-full">Todas las ordenes</Button>
           </Link>
         </div>
       </Box>
@@ -39,7 +39,7 @@ export default async function Home() {
         <h2 className="text-2xl font-semibold">Actualizaciones Recientes en el Inventario</h2>
         <RecentTable logs={inventory} />
         <Link href="/inventario">
-          <Button icon={List} accent>Ver Inventario Completo</Button>
+          <Button icon={List} variant="outline">Ver Inventario Completo</Button>
         </Link>
       </Box>
     </main>
