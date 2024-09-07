@@ -1,32 +1,24 @@
 "use client"
 
 import { formatDate, formatMoney } from "@/lib/utils";
-import { ChevronUp, AlertTriangle, CheckCircle, Clock, XCircle, ChevronDown } from "lucide-react";
+import { ChevronUp, AlertTriangle, CheckCircle, Clock, XCircle, ChevronDown, Ellipsis, Pen } from "lucide-react";
 import { TableRow, TableCell } from "../shadcn/ui/table";
 import ProductsDetail from "./products-detail";
 import { ClientOrders } from "@/app/api/orders/route";
 import { Button } from "../shadcn/ui/button";
 import { useState } from "react";
 import { Badge } from "../shadcn/ui/badge";
+import StateCell from "./state-cell";
+import { DBOrderState } from "@/lib/db.type";
 
 interface Props {
   order: ClientOrders;
+  states: DBOrderState[];
 }
 
-export default function OrderRow({ order }: Props) {
+export default function OrderRow({ order, states }: Props) {
 
   const [showProducts, setShowProducts] = useState(false);
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'ACTIVO':
-        return <CheckCircle className="h-5 w-5 text-green-500" />
-      case 'CANCELADO':
-        return <Clock className="h-5 w-5 text-yellow-500" />
-      case 'FINALIZADO':
-        return <XCircle className="h-5 w-5 text-red-500" />
-    }
-  }
 
   return (
     <>
@@ -46,12 +38,7 @@ export default function OrderRow({ order }: Props) {
         </TableCell>
         <TableCell className="font-medium">{order.client}</TableCell>
         <TableCell>{formatDate(order.date)}</TableCell>
-        <TableCell>
-          <div className="flex items-center gap-2">
-            {getStatusIcon(order.state)}
-            <span className="capitalize">{order.state}</span>
-          </div>
-        </TableCell>
+        <StateCell orderId={order.id.toString()} state={order.state} states={states} />
         <TableCell>
           {order.urgent && (
             <Badge variant="destructive">

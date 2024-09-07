@@ -204,18 +204,62 @@ export async function saveOrder(
     total: value.products.reduce((acc, p) => acc + p.value * p.quantity, 0),
   });
 
-  await db.insert(inventoryLog).values(
-    value.products.map((p) => ({
-      product: p.name,
-      type: "out" as const,
-      quantity: p.quantity,
-    }))
-  );
+  revalidatePath("/");
 
-  for (const prod of value.products) {
-    const productDB = productsDB.find((p) => p.id === prod.productId);
+  return {
+    pending: false,
+    errors: undefined,
+  };
+}
 
-    if (!productDB) continue;
+const schemaUpdateOrderState = zfd.formData({
+  orderId: zfd.numeric(),
+  stateId: zfd.numeric(),
+});
+
+export async function updateOrderState(formData: FormData) {
+  const {
+    data: value,
+    error,
+    success,
+  } = schemaUpdateOrderState.safeParse(formData);
+
+  if (!success) {
+    return {
+      errors: parseErrors(error),
+      pending: false,
+    };
+  }
+
+  const dbOrders = await db
+    .select()
+    .from(orders)
+    .where(eq(orders.id, value.orderId))
+    .limit(1);
+
+  if (dbOrders.length === 0) {
+    return {
+      pending: false,
+    };
+  }
+
+  const order = dbOrders[0];
+
+  await db
+    .update(orders)
+    .set({ state: value.stateId })
+    .where(eq(orders.id, value.orderId));
+
+  for (const prod of order.products) {
+    // TODO: save product id to update stock
+    const productsDB = await db
+      .select()
+      .from(products)
+      .where(eq(products.name, prod.product));
+
+    if (productsDB.length === 0) continue;
+
+    const productDB = productsDB[0];
 
     if (productDB.stock - prod.quantity === 0) continue;
 
@@ -225,12 +269,17 @@ export async function saveOrder(
         stock: productDB.stock - prod.quantity,
       })
       .where(eq(products.id, productDB.id));
+
+    await db.insert(inventoryLog).values({
+      product: prod.product,
+      type: "out" as const,
+      quantity: prod.quantity,
+    });
   }
 
-  revalidatePath("/");
+  revalidatePath("/ordenes");
 
   return {
     pending: false,
-    errors: undefined,
   };
 }

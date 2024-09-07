@@ -23,7 +23,7 @@ export default async function OrdersPage({ searchParams }: Props) {
         <div className="w-1/4">
           <Filters states={states} defaultFilters={searchParams} />
         </div>
-        <OrdersTable orders={orders} />
+        <OrdersTable orders={orders} states={states} />
       </div>
     </main>
   );

@@ -3,7 +3,6 @@
 import { ClientOrders } from "@/app/api/orders/route";
 import { TableCell, TableRow } from "../shadcn/ui/table";
 import { formatMoney } from "@/lib/utils";
-import { twMerge } from "tailwind-merge";
 
 interface Props {
   products: ClientOrders["products"];
@@ -15,7 +14,8 @@ export default function ProductsDetail({ products, open }: Props) {
   return (
 
     <TableRow className="overflow-hidden" hidden={!open}>
-      <TableCell colSpan={7}>
+      <TableCell></TableCell>
+      <TableCell colSpan={6}>
         <div>
           <div className="p-4 bg-muted/50 rounded-md">
             <h4 className="font-semibold mb-2">Productos:</h4>
