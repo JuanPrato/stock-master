@@ -7,6 +7,7 @@ type Props = {
   name: string;
   error?: string;
   labelProps?: { className: string };
+  containerProps?: { className: string };
 } & ComponentProps<typeof InputUI>;
 
 export default function Input(props: Props) {
