@@ -13,6 +13,7 @@ const schemaSaveProduct = zfd.formData({
   name: zfd.text(),
   description: zfd.text().optional(),
   price: zfd.numeric(z.number().positive()),
+  unitCost: zfd.numeric(z.number().positive()),
   stock: zfd.numeric(z.number().min(0)),
   stockLimit: zfd.numeric(z.number().min(0)),
   category: zfd.numeric(z.number().min(0)),
@@ -49,6 +50,7 @@ const schemaUpdateProduct = zfd.formData({
   name: zfd.text(),
   description: zfd.text(z.string().optional()),
   price: zfd.numeric(z.number().positive()),
+  unitCost: zfd.numeric(z.number().positive()),
   stock: zfd.numeric(z.number().min(0)),
   stockLimit: zfd.numeric(z.number().min(0)),
   category: zfd.numeric(z.number().min(0)),
@@ -95,6 +97,8 @@ export async function updateProduct(ps: any, formData: FormData) {
     quantity: value.stock - product[0].stock,
     type: "update",
   });
+
+  revalidatePath("/inventario");
 
   return {
     pending: false,

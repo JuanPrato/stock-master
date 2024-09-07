@@ -21,7 +21,7 @@ export default function Input(props: Props) {
         {props.name}
       </Label>
       <div className="w-full">
-        <InputUI {...props} name={props.id} className={props.error && "ring ring-destructive"} />
+        <InputUI {...props} name={props.id} className={twMerge(props.error && "ring ring-destructive", props.className)} />
         {
           props.error && (
             <p className="text-muted-foreground text-sm mt-1">{props.error}</p>

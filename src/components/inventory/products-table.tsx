@@ -18,27 +18,14 @@ export default function ProductsTable({ products, categories }: Props) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="cursor-pointer">
-            Id
-          </TableHead>
-          <TableHead className="cursor-pointer">
-            Nombre
-          </TableHead>
-          <TableHead className="cursor-pointer">
-            Categoría
-          </TableHead>
-          <TableHead className="cursor-pointer">
-            Precio
-          </TableHead>
-          <TableHead className="cursor-pointer">
-            Cantidad
-          </TableHead>
-          <TableHead className="cursor-pointer">
-            Valor Total
-          </TableHead>
-          <TableHead className="cursor-pointer">
-            Acciones
-          </TableHead>
+          <TableHead>Id</TableHead>
+          <TableHead>Nombre</TableHead>
+          <TableHead>Categoría</TableHead>
+          <TableHead>Precio</TableHead>
+          <TableHead>Costo u.</TableHead>
+          <TableHead>Cantidad</TableHead>
+          <TableHead>Valor Total</TableHead>
+          <TableHead>Acciones</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -48,6 +35,7 @@ export default function ProductsTable({ products, categories }: Props) {
             <TableCell>{product.name}</TableCell>
             <TableCell>{getCategory(product.category!)}</TableCell>
             <TableCell>{formatMoney(product.price)}</TableCell>
+            <TableCell>{formatMoney(product.unitCost)}</TableCell>
             <TableCell>{product.stock}</TableCell>
             <TableCell>{formatMoney(product.price * product.stock)}</TableCell>
             <TableCell>

@@ -50,7 +50,10 @@ export default function AddProduct({ categories }: Props) {
           <Input name="Nombre" id="name" type="text" error={errors?.name} />
           <Input name="Stock" id="stock" type="number" error={errors?.stock} />
           <Input name="Limite stock" id="stockLimit" type="number" error={errors?.stockLimit} />
-          <Input name="Precio" id="price" type="number" error={errors?.price} />
+          <InputBox>
+            <Input name="Precio" id="price" type="number" error={errors?.price} />
+            <Input name="Costo" id="unitCost" type="number" error={errors?.unitCost} />
+          </InputBox>
           <InputBox>
             <Label htmlFor="category" className="text-md w-1/4">Categoría</Label>
             <Select name="category">
