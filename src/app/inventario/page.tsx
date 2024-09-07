@@ -6,6 +6,7 @@ import {like, and, eq, inArray, SQL, gte, lte} from "drizzle-orm";
 import AddProduct from "@/components/dashboard/add-product";
 import {getProducts, ProductsFilter} from "@/lib/api.utils";
 import CategoriesModal from "@/components/inventory/categories-modal";
+import AuditRegistry from "@/components/inventory/audit-registry";
 
 interface Props {
   searchParams: ProductsFilter;
@@ -23,6 +24,7 @@ export default async function Inventory({searchParams}: Props) {
         <div className="flex gap-2">
           <CategoriesModal categories={categories} />
           <AddProduct categories={categories}/>
+          <AuditRegistry />
         </div>
       </div>
       <div className="flex">

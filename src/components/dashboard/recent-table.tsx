@@ -16,7 +16,7 @@ interface Props {
 export default function RecentTable({ logs }: Props) {
 
   return (
-    <Table>
+    <Table className="overflow-auto">
       <TableHeader>
         <TableRow>
           <TableHead>Producto</TableHead>
@@ -32,7 +32,7 @@ export default function RecentTable({ logs }: Props) {
             const timeAgo = dayjs().to(dayjs(log.date));
 
             return (
-              <TableRow key={log.product}>
+              <TableRow key={`${log.product}-${log.date}`}>
                 <TableCell>{log.product}</TableCell>
                 <ActionEntry type={log.type!} />
                 <TableCell>{log.quantity}</TableCell>

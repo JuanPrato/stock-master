@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { inventoryLog, orders, products } from "@/db/schema";
 import { zfd } from "zod-form-data";
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { parseErrors } from "@/lib/utils";
 import { eq, inArray } from "drizzle-orm";
 import { STATES } from "@/lib/constants";
@@ -39,6 +39,7 @@ export async function saveProduct(prevState: any, formData: FormData) {
   });
 
   revalidatePath("/");
+  revalidateTag("logs")
 
   return {
     pending: false,
@@ -99,6 +100,7 @@ export async function updateProduct(ps: any, formData: FormData) {
   });
 
   revalidatePath("/inventario");
+  revalidateTag("logs");
 
   return {
     pending: false,
@@ -140,6 +142,7 @@ export async function deleteProduct(formData: FormData) {
   });
 
   revalidatePath("/inventario");
+  revalidateTag("logs");
 
   return {
     pending: false,

@@ -1,5 +1,35 @@
 import { ClientOrders } from "@/app/api/orders/route";
-import {DBProduct} from "@/lib/db.type";
+import { DBInventoryLog, DBProduct } from "@/lib/db.type";
+
+async function GET(path: string, tag?: string) {
+  const resp = await fetch(`http://localhost:3000/api/${path}`, {
+    next:{
+      tags: tag ? [tag] : undefined
+    }
+  });
+
+  if (!resp.ok) {
+    throw new Error(`Error calling ${path}`);
+  }
+
+  return resp.json();
+}
+
+async function POST(path: string, body: any, tag?: string) {
+  const resp: Response = await fetch(`http://localhost:3000/api/${path}`, {
+    method: "POST",
+    body: JSON.stringify(body),
+    next:{
+      tags: tag ? [tag] : undefined
+    }
+  });
+
+  if (!resp.ok) {
+    throw new Error(`Error calling ${path}`);
+  }
+
+  return resp.json();
+}
 
 export interface OrdersFilter {
   client?: string;
@@ -12,13 +42,7 @@ export interface OrdersFilter {
 export async function getOrders(
   filters: OrdersFilter
 ): Promise<ClientOrders[]> {
-  const orders = await fetch("http://localhost:3000/api/orders", {
-    method: "POST",
-    body: JSON.stringify(filters),
-    next: {
-      tags: ["orders"]
-    }
-  }).then((r) => r.json());
+  const orders = await POST("/orders", filters, "orders");
 
   return orders.orders;
 }
@@ -31,13 +55,12 @@ export interface ProductsFilter {
 }
 
 export async function getProducts(filters: ProductsFilter): Promise<DBProduct[]> {
-  const products = await fetch("http://localhost:3000/api/products", {
-    method: "POST",
-    body: JSON.stringify(filters),
-    next: {
-      tags: ["products"]
-    }
-  }).then((r) => r.json());
-
+  const products = await POST("/products", filters, "products");
   return products.products;
+}
+
+export async function getAuditRegistry(): Promise<DBInventoryLog[]> {
+  const resp = await GET("/products/logs", "logs");
+
+  return resp.logs;
 }
