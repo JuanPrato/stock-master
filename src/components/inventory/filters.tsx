@@ -3,8 +3,6 @@ import { Input } from "../shadcn/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../shadcn/ui/select";
 import { category } from "@/db/schema";
 import { Button } from "../shadcn/ui/button";
-import Link from "next/link";
-import { useState } from "react";
 
 interface Props {
   categories: (typeof category.$inferSelect)[];

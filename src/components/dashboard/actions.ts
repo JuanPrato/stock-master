@@ -217,6 +217,8 @@ export async function saveOrder(
 
     if (!productDB) continue;
 
+    if (productDB.stock - prod.quantity === 0) continue;
+
     await db
       .update(products)
       .set({
