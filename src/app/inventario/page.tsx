@@ -5,7 +5,7 @@ import {db, getCategories} from "@/lib/db";
 import {like, and, eq, inArray, SQL, gte, lte} from "drizzle-orm";
 import AddProduct from "@/components/dashboard/add-product";
 import {getProducts, ProductsFilter} from "@/lib/api.utils";
-import AddCategory from "@/components/inventory/add-category";
+import CategoriesModal from "@/components/inventory/categories-modal";
 
 interface Props {
   searchParams: ProductsFilter;
@@ -21,7 +21,7 @@ export default async function Inventory({searchParams}: Props) {
       <div className="flex justify-between items-center mb-6 gap-4">
         <h1 className="text-2xl font-bold">Inventario Completo</h1>
         <div className="flex gap-2">
-          <AddCategory />
+          <CategoriesModal categories={categories} />
           <AddProduct categories={categories}/>
         </div>
       </div>
