@@ -85,14 +85,15 @@ export default function AddOrder({ products }: Props) {
         <Button icon={ShoppingCart}>Procesar Orden</Button>
       )}
       footer={(<Button type="submit" form="orderForm">Procesar orden</Button>)}
-      title="Añadir nuevo Producto"
-      description="Complete los detalles del nuevo producto a continuación"
+      title="Cargar una nueva orden"
+      description="Los movimientos no se veras reflejado hasta que la orden no se marque como completada"
       onOpenChange={onOpenChange}
       shouldClose={closeModal}
     >
       <form className="flex flex-col gap-3" action={action} id="orderForm">
         <InputUI name="Cliente" id="client" type="text" error={errors?.client} />
         <div className="flex gap-3 flex-col items-start">
+          <Separator />
           <div className="my-1">
             <h2 className="text-md inline-block font-bold">Productos</h2>
             {
@@ -101,7 +102,6 @@ export default function AddOrder({ products }: Props) {
               )
             }
           </div>
-          <Separator />
           {
             selectProducts.map(prod => (
               <AddSubProduct
@@ -122,9 +122,14 @@ export default function AddOrder({ products }: Props) {
           >Agregar producto
           </Button>
         </div>
+        <Separator />
         <InputBox>
           <Label>Este pedido requiere urgencia?</Label>
           <Checkbox name="urgent" id="urgent" />
+        </InputBox>
+        <InputBox>
+          <Label>Marcar como finalizada</Label>
+          <Checkbox name="end" id="end" />
         </InputBox>
         <h3 className="text-md font-medium">Total: ${selectProducts.reduce((acc, prod) => acc + (prod.value * (prod.quantity || 0)), 0)}</h3>
       </form>

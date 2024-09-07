@@ -7,6 +7,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { parseErrors } from "@/lib/utils";
 import { eq, inArray } from "drizzle-orm";
+import { STATES } from "@/lib/constants";
 
 const schemaSaveProduct = zfd.formData({
   name: zfd.text(),
@@ -159,6 +160,7 @@ const schemaSaveOrder = zfd.formData({
   client: zfd.text(),
   urgent: zfd.checkbox(),
   products: zfd.json(schemaProducts),
+  end: zfd.checkbox(),
 });
 
 export async function saveOrder(
@@ -202,6 +204,7 @@ export async function saveOrder(
       quantity: p.quantity,
     })),
     total: value.products.reduce((acc, p) => acc + p.value * p.quantity, 0),
+    state: value.end ? STATES.FINALIZED : STATES.ACTIVE,
   });
 
   revalidatePath("/");
