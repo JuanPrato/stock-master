@@ -12,9 +12,9 @@ async function GET(path: string, tag?: string) {
   });
 
   if (!resp.ok) {
+    console.log(`Error calling ${path}`);
     throw new Error(`Error calling ${path}`);
   }
-
   return resp.json();
 }
 

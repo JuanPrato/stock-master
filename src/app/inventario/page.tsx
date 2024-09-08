@@ -16,7 +16,7 @@ export default async function Inventory({searchParams}: Props) {
 
   const categories = await getCategories();
   const products = await getProducts(searchParams);
-
+  console.log("PRODUCTS: ", products);
   return (
     <main className="flex-1 py-6 px-4 lg:px-8">
       <div className="flex justify-between items-center mb-6 gap-4">
