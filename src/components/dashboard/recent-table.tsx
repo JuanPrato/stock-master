@@ -1,9 +1,9 @@
-import { DashboardGetResponse } from "@/app/api/dashboard/route";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../shadcn/ui/table";
 import ActionEntry from "./action-entry";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/es";
 import dayjs from "dayjs";
+import { DashboardGetResponse } from "@/lib/stats.util";
 
 
 dayjs.extend(relativeTime);
