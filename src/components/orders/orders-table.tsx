@@ -1,8 +1,8 @@
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/shadcn/ui/table";
 
-import { ClientOrders } from "@/app/api/orders/route";
 import OrderRow from "./order-row";
 import { DBOrderState } from "@/lib/db.type";
+import { ClientOrders } from "@/lib/orders.util";
 
 interface Props {
   orders: ClientOrders[];

@@ -1,8 +1,8 @@
 "use client"
 
-import { ClientOrders } from "@/app/api/orders/route";
 import { TableCell, TableRow } from "../shadcn/ui/table";
 import { formatMoney } from "@/lib/utils";
+import { ClientOrders } from "@/lib/orders.util";
 
 interface Props {
   products: ClientOrders["products"];

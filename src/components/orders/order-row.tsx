@@ -4,12 +4,12 @@ import { formatDate, formatMoney } from "@/lib/utils";
 import { ChevronUp, AlertTriangle, CheckCircle, Clock, XCircle, ChevronDown, Ellipsis, Pen } from "lucide-react";
 import { TableRow, TableCell } from "../shadcn/ui/table";
 import ProductsDetail from "./products-detail";
-import { ClientOrders } from "@/app/api/orders/route";
 import { Button } from "../shadcn/ui/button";
 import { useState } from "react";
 import { Badge } from "../shadcn/ui/badge";
 import StateCell from "./state-cell";
 import { DBOrderState } from "@/lib/db.type";
+import { ClientOrders } from "@/lib/orders.util";
 
 interface Props {
   order: ClientOrders;
