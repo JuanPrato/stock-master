@@ -4,6 +4,7 @@ import { DBInventoryLog, DBProduct } from "@/lib/db.type";
 const host = process.env.NEXT_PUBLIC_URL;
 
 async function GET(path: string, tag?: string) {
+  console.log("GET TO: ", `${host}/api/${path}`);
   const resp = await fetch(`${host}/api/${path}`, {
     next:{
       tags: tag ? [tag] : undefined
@@ -18,6 +19,7 @@ async function GET(path: string, tag?: string) {
 }
 
 async function POST(path: string, body: any, tag?: string) {
+  console.log("POST TO: ", `${host}/api/${path}`);
   const resp: Response = await fetch(`${host}/api/${path}`, {
     method: "POST",
     body: JSON.stringify(body),
