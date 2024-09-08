@@ -1,8 +1,10 @@
 import { ClientOrders } from "@/app/api/orders/route";
 import { DBInventoryLog, DBProduct } from "@/lib/db.type";
 
+const host = process.env.NEXT_PUBLIC_URL;
+
 async function GET(path: string, tag?: string) {
-  const resp = await fetch(`http://localhost:3000/api/${path}`, {
+  const resp = await fetch(`${host}/api/${path}`, {
     next:{
       tags: tag ? [tag] : undefined
     }
@@ -16,7 +18,7 @@ async function GET(path: string, tag?: string) {
 }
 
 async function POST(path: string, body: any, tag?: string) {
-  const resp: Response = await fetch(`http://localhost:3000/api/${path}`, {
+  const resp: Response = await fetch(`${host}/api/${path}`, {
     method: "POST",
     body: JSON.stringify(body),
     next:{

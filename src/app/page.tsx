@@ -12,7 +12,7 @@ import {Button} from "@/components/shadcn/ui/button";
 
 export default async function Home() {
 
-  const { stats, inventory, categories } = await fetch("http://localhost:3000/api/dashboard", { method: "GET", cache: "no-cache" }).then(r => r.json()) as DashboardGetResponse;
+  const { stats, inventory, categories } = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/dashboard`, { method: "GET", cache: "no-cache" }).then(r => r.json()) as DashboardGetResponse;
 
   const products = await db.select().from(productsTable);
 
