@@ -9,12 +9,11 @@ import { db } from "@/lib/db";
 import { products as productsTable } from "@/db/schema";
 import Link from "next/link";
 import {Button} from "@/components/shadcn/ui/button";
-
-export const dynamic = "force-dynamic";
+import { GET as getDashboardStats } from "@/app/api/dashboard/route";
 
 export default async function Home() {
 
-  const { stats, inventory, categories } = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/dashboard`, { method: "GET", cache: "no-cache" }).then(r => r.json()) as DashboardGetResponse;
+  const { stats, inventory, categories } = await getDashboardStats().then(r => r.json()) as DashboardGetResponse;
 
   const products = await db.select().from(productsTable);
 
