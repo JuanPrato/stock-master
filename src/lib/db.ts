@@ -9,7 +9,7 @@ if (!url) {
   throw new Error();
 }
 
-const client = createClient({ url, authToken: process.env.DB_AUTH_TOKEN });
+export const client = createClient({ url, authToken: process.env.DB_AUTH_TOKEN });
 
 export const db = drizzle(client);
 

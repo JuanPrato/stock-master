@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "pnpx drizzle-kit generate & pnpx drizzle-kit migrate & next start",
-    "lint": "next lint"
+    "build": "pnpm run db:migrate &next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "pnpm drizzle-kit generate",
+    "db:migrate": "pnpm tsx src/lib/migrate.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.10.0",
