@@ -1,12 +1,11 @@
 import Filters from "@/components/inventory/filters";
 import ProductsTable from "@/components/inventory/products-table";
-import {category as categoryTable, products as productsTable} from "@/db/schema";
 import {db, getCategories} from "@/lib/db";
-import {like, and, eq, inArray, SQL, gte, lte} from "drizzle-orm";
 import AddProduct from "@/components/dashboard/add-product";
-import {getProducts, ProductsFilter} from "@/lib/api.utils";
+import { ProductsFilter } from "@/lib/api.utils";
 import CategoriesModal from "@/components/inventory/categories-modal";
 import AuditRegistry from "@/components/inventory/audit-registry";
+import { getProducts } from "@/lib/products.util";
 
 interface Props {
   searchParams: ProductsFilter;
@@ -16,6 +15,7 @@ export default async function Inventory({searchParams}: Props) {
 
   const categories = await getCategories();
   const products = await getProducts(searchParams);
+
   console.log("PRODUCTS: ", products);
   return (
     <main className="flex-1 py-6 px-4 lg:px-8">
