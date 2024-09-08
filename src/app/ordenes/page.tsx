@@ -1,8 +1,9 @@
 import Filters from "@/components/orders/filters";
 import OrdersTable from "@/components/orders/orders-table";
 import { orderStates } from "@/db/schema";
-import { getOrders, OrdersFilter } from "@/lib/api.utils";
+import { OrdersFilter } from "@/lib/api.utils";
 import { db } from "@/lib/db";
+import { getOrders } from "@/lib/orders.util";
 
 interface Props {
   searchParams: OrdersFilter;

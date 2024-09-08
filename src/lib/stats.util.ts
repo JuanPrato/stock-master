@@ -1,11 +1,8 @@
-import {
-  category,
-  inventoryLog,
-  orders as ordersTable,
-  products as productsTable,
-} from "@/db/schema";
-import { db } from "@/lib/db";
+import { OrdersFilter } from "@/lib/api.utils";
+import { unstable_cache } from "next/cache";
+import { category, inventoryLog, orders as ordersTable, products as productsTable } from "@/db/schema";
 import dayjs from "dayjs";
+import { db } from "@/lib/db";
 import { desc, gte } from "drizzle-orm";
 
 export type DashboardGetResponse = {
@@ -24,7 +21,8 @@ export type DashboardGetResponse = {
   categories: { id: number; description: string }[];
 };
 
-export async function GET() {
+
+export async function getDashboardStatsWithOutCache(): Promise<DashboardGetResponse> {
   const today = dayjs().startOf("day");
 
   const products = await db.select().from(productsTable);
@@ -72,9 +70,9 @@ export async function GET() {
 
   const categories = await db.select().from(category);
 
-  return Response.json({
+  return {
     stats,
     inventory: inventoryRecent,
     categories: categories,
-  });
+  };
 }

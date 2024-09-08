@@ -1,5 +1,4 @@
-import { ClientOrders } from "@/app/api/orders/route";
-import { DBInventoryLog, DBProduct } from "@/lib/db.type";
+import { DBInventoryLog } from "@/lib/db.type";
 
 const host = process.env.NEXT_PUBLIC_URL;
 
@@ -43,24 +42,11 @@ export interface OrdersFilter {
   urgent?: string;
 }
 
-export async function getOrders(
-  filters: OrdersFilter
-): Promise<ClientOrders[]> {
-  const orders = await POST("/orders", filters, "orders");
-
-  return orders.orders;
-}
-
 export interface ProductsFilter {
   query?: string;
   category?: string;
   from?: string;
   to?: string;
-}
-
-export async function getProducts(filters: ProductsFilter): Promise<DBProduct[]> {
-  const products = await POST("/products", filters, "products");
-  return products.products;
 }
 
 export async function getAuditRegistry(): Promise<DBInventoryLog[]> {

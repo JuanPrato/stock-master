@@ -1,8 +1,9 @@
-import { db } from "@/lib/db";
-import { and, desc, eq, gte, like, lte, or } from "drizzle-orm";
-import { orders as ordersTable, orderStates } from "@/db/schema";
-import { DBOrder, DBOrderState } from "@/lib/db.type";
+import { DBOrder } from "@/lib/db.type";
 import { OrdersFilter } from "@/lib/api.utils";
+import { and, desc, eq, gte, like, lte } from "drizzle-orm";
+import { db } from "@/lib/db";
+import { unstable_cache } from "next/cache";
+import { orders as ordersTable, orderStates } from "@/db/schema";
 import dayjs from "dayjs";
 
 export type ClientOrders = Omit<DBOrder, "state" | "orderDate"> & {
@@ -10,8 +11,7 @@ export type ClientOrders = Omit<DBOrder, "state" | "orderDate"> & {
   date: Date;
 };
 
-export async function POST(request: Request) {
-  const filters = (await request.json()) as OrdersFilter;
+async function getOrdersWithOutCache(filters: OrdersFilter): Promise<ClientOrders[]> {
 
   const wheres = [];
 
@@ -42,17 +42,15 @@ export async function POST(request: Request) {
     .where(and(...wheres))
     .orderBy(desc(ordersTable.orderDate));
 
-  const response: { orders: ClientOrders[] } = {
-    orders: dbOrders.map(({ orders, states }) => ({
-      id: orders.id,
-      client: orders.client,
-      date: orders.orderDate ?? new Date(),
-      products: orders.products,
-      state: states.description,
-      urgent: orders.urgent,
-      total: orders.total,
-    })),
-  };
-
-  return Response.json(response);
+  return dbOrders.map(({ orders, states }) => ({
+    id: orders.id,
+    client: orders.client,
+    date: orders.orderDate ?? new Date(),
+    products: orders.products,
+    state: states.description,
+    urgent: orders.urgent,
+    total: orders.total,
+  }));
 }
+
+export const getOrders = unstable_cache(getOrdersWithOutCache, ["orders"], { tags: ["orders"] })
