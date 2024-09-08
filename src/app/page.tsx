@@ -10,6 +10,8 @@ import { products as productsTable } from "@/db/schema";
 import Link from "next/link";
 import {Button} from "@/components/shadcn/ui/button";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
 
   const { stats, inventory, categories } = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/dashboard`, { method: "GET", cache: "no-cache" }).then(r => r.json()) as DashboardGetResponse;
