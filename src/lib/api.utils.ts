@@ -2,9 +2,10 @@ import { DBInventoryLog } from "@/lib/db.type";
 
 const host = process.env.NEXT_PUBLIC_URL;
 
-async function GET(path: string, tag?: string) {
+async function GET(path: string, tag?: string, cfg?: any) {
   console.log("GET TO: ", `${host}/api/${path}`);
   const resp = await fetch(`${host}/api/${path}`, {
+    ...cfg,
     next:{
       tags: tag ? [tag] : undefined
     }
@@ -50,7 +51,7 @@ export interface ProductsFilter {
 }
 
 export async function getAuditRegistry(): Promise<DBInventoryLog[]> {
-  const resp = await GET("/products/logs", "logs");
+  const resp = await GET("/products/logs", "logs", { cache: "no-cache" });
 
   return resp.logs;
 }
