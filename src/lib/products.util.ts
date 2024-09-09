@@ -5,8 +5,8 @@ import { category as categoriesTable, products as productsTable } from "@/db/sch
 import { db } from "@/lib/db";
 import { unstable_cache } from "next/cache";
 
-async function getProductsWithOutCache(filters: ProductsFilter): Promise<DBProduct[]> {
-  const {query, category, to, from} = filters;
+async function getProductsWithOutCache(filters?: ProductsFilter): Promise<DBProduct[]> {
+  const {query, category, to, from} = filters || {};
 
   const conditions: SQL<any>[] = [];
 
