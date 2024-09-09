@@ -30,7 +30,18 @@ export async function saveProduct(prevState: any, formData: FormData) {
     };
   }
 
-  const result = await db.insert(products).values(value);
+  try {
+    const result = await db.insert(products).values(value);
+
+    if (result.rowsAffected === 0) {
+      return {
+        pending: false,
+        errors: "Error saving product",
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
 
   await db.insert(inventoryLog).values({
     product: value.name,
@@ -39,7 +50,8 @@ export async function saveProduct(prevState: any, formData: FormData) {
   });
 
   revalidatePath("/");
-  revalidateTag("logs")
+  revalidateTag("logs");
+  revalidateTag("products");
 
   return {
     pending: false,
@@ -101,6 +113,7 @@ export async function updateProduct(ps: any, formData: FormData) {
 
   revalidatePath("/inventario");
   revalidateTag("logs");
+  revalidateTag("products");
 
   return {
     pending: false,

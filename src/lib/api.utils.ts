@@ -54,3 +54,8 @@ export async function getAuditRegistry(): Promise<DBInventoryLog[]> {
 
   return resp.logs;
 }
+
+export async function logIn() {
+  await POST("/login", {});
+
+}
