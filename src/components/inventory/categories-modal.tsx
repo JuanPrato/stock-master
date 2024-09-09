@@ -2,13 +2,14 @@
 
 import { ClipboardIcon } from "lucide-react";
 import Input from "@/components/layout/input";
+import { Input as InputUI } from "@/components/shadcn/ui/input";
 import Modal from "@/components/layout/modal";
 import { useFormState } from "react-dom";
 import { saveCategory } from "@/actions/category.actions";
 import { Button } from "@/components/shadcn/ui/button";
 import { DBCategory } from "@/lib/db.type";
 import SelectSearch from "@/components/layout/select-search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   categories: DBCategory[];
@@ -16,8 +17,9 @@ interface Props {
 
 export default function CategoriesModal({ categories }: Props) {
 
-  const [state, action] = useFormState(saveCategory, { errors: undefined, pending: true });
+  const [state, action, isPending] = useFormState(saveCategory, { errors: undefined, pending: true });
   const [selected, setSelected] = useState<Partial<DBCategory>>();
+  const [call, setCall] = useState(false);
 
   function handleCategorySelected(cat: string) {
     if (cat === selected?.id?.toString()) {
@@ -31,8 +33,13 @@ export default function CategoriesModal({ categories }: Props) {
   function handleClose(v: boolean) {
     if (!v) {
       setSelected(undefined);
+      setCall(false);
     }
   }
+
+  useEffect(() => {
+    setCall(true);
+  }, [state]);
 
   return (
     <Modal
@@ -44,7 +51,7 @@ export default function CategoriesModal({ categories }: Props) {
       }
       title="Agregar una nueva categoría"
       description="Se recomienda usar un color nueva para diferenciar los productos"
-      shouldClose={{ should: (!state?.pending && !state?.errors) }}
+      shouldClose={{ should: (call && !isPending && !state?.errors) }}
       onOpenChange={handleClose}
     >
       <form className="flex flex-col gap-3" action={action} id="categoryForm">
@@ -53,6 +60,7 @@ export default function CategoriesModal({ categories }: Props) {
           onValueChange={handleCategorySelected}
           placeHolder="Categoria nueva"
         />
+        <InputUI name="id" type="hidden" defaultValue={selected?.id} />
         <Input
           name="Nombre"
           id="name" type="text"
