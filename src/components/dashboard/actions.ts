@@ -250,6 +250,7 @@ export async function saveOrder(
   }
 
   revalidatePath("/");
+  revalidateTag("orders");
 
   return {
     pending: false,
@@ -323,6 +324,7 @@ export async function updateOrderState(formData: FormData) {
   }
 
   revalidatePath("/ordenes");
+  revalidateTag("orders");
 
   return {
     pending: false,
