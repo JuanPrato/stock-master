@@ -1,17 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
+import { ROUTES } from "@/lib/constants";
 
 export async function middleware(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
-  if (privateRoutes.includes(pathname)) {
+  if (routes.includes(pathname)) {
     const session = await getSession();
-    console.log("session", session);
-    if (!session) {
+
+    const isLogin = pathname === ROUTES.LOGIN;
+
+    if (!session && !isLogin) {
       return NextResponse.redirect(new URL('/login', request.url));
+    } else if (session && isLogin) {
+      return NextResponse.redirect(new URL('/', request.url));
     }
   }
 }
 
-const privateRoutes = ["/", "/inventario", "/ordenes"];
+const routes = ["/", "/inventario", "/ordenes", "/login"];
+
+export const config = {
+  matcher: routes
+}

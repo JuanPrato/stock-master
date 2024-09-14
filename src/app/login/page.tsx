@@ -11,6 +11,7 @@ export default function LoginPage() {
   async function handleLogin() {
     await logIn();
     router.push("/");
+    router.refresh();
   }
 
   return (

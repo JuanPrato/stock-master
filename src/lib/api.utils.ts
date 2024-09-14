@@ -2,10 +2,11 @@ import { DBInventoryLog } from "@/lib/db.type";
 
 const host = process.env.NEXT_PUBLIC_URL;
 
-async function GET(path: string, tag?: string, cfg?: any) {
-  console.log("GET TO: ", `${host}/api/${path}`);
+async function CALL(method: string, path: string, tag?: string, cfg?:any) {
+  console.log(method, "TO: ", `${host}/api/${path}`);
   const resp = await fetch(`${host}/api/${path}`, {
     ...cfg,
+    method,
     next:{
       tags: tag ? [tag] : undefined
     }
@@ -15,24 +16,20 @@ async function GET(path: string, tag?: string, cfg?: any) {
     console.log(`Error calling ${path}`);
     throw new Error(`Error calling ${path}`);
   }
+
   return resp.json();
 }
 
+async function GET(path: string, tag?: string, cfg?: any) {
+  return CALL("GET", path, tag, cfg);
+}
+
 async function POST(path: string, body: any, tag?: string) {
-  console.log("POST TO: ", `${host}/api/${path}`);
-  const resp: Response = await fetch(`${host}/api/${path}`, {
-    method: "POST",
-    body: JSON.stringify(body),
-    next:{
-      tags: tag ? [tag] : undefined
-    }
-  });
+  return CALL("POST", path, tag, { body: JSON.stringify(body) });
+}
 
-  if (!resp.ok) {
-    throw new Error(`Error calling ${path}`);
-  }
-
-  return resp.json();
+async function PUT(path: string, body: any, tag?: string) {
+  return CALL("PUT", path, tag, { body: JSON.stringify(body) });
 }
 
 export interface OrdersFilter {
@@ -58,5 +55,8 @@ export async function getAuditRegistry(): Promise<DBInventoryLog[]> {
 
 export async function logIn() {
   await POST("/login", {});
+}
 
+export async function clientLogOut() {
+  await PUT("/logout", {});
 }
