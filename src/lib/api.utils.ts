@@ -2,14 +2,17 @@ import { DBInventoryLog } from "@/lib/db.type";
 
 const host = process.env.NEXT_PUBLIC_URL;
 
-async function CALL(method: string, path: string, tag?: string, cfg?:any) {
+async function CALL(method: string, path: string, tag?: string, cfg?: any) {
   console.log(method, "TO: ", `${host}/api/${path}`);
   const resp = await fetch(`${host}/api/${path}`, {
     ...cfg,
     method,
-    next:{
-      tags: tag ? [tag] : undefined
-    }
+    next: {
+      tags: tag ? [tag] : undefined,
+    },
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
   if (!resp.ok) {
